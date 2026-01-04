@@ -137,7 +137,7 @@ def request_by_user_input():
 # 2. Отправляем POST-запрос с JSON в теле
 def make_request(new_request):
     response = requests.post(url, json=new_request, headers=headers)
-
+    print('making a request')
     if response.status_code == 200: #status code - статус ответа, например 404 page no found, 200 - вроде всё ок
         data = response.json()
     
@@ -161,7 +161,9 @@ def create_df_from_request(data):
 def get_random_url(data):
     random_statblock = random.choice(data['hits']['hits'])
     random_url = random_statblock['_source']['url']
-    print('https://2e.aonprd.com' + f'{random_url}')
+    print('url = https://2e.aonprd.com' + f'{random_url}')
+    print(f'name = {random_statblock['_source']['name']}')
+    print(f'level = {random_statblock['_source']['level']}')
 
 if __name__ == '__main__':
     request = request_by_user_input()
