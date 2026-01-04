@@ -1,0 +1,34 @@
+:authority
+elasticsearch.aonprd.com
+:method
+GET
+:path
+/json-data/2358078df34f8d82cba6067c5455c86c.json
+:scheme
+https
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+ru,en-US;q=0.9,en;q=0.8,ja;q=0.7
+origin
+https://2e.aonprd.com
+priority
+u=1, i
+referer
+https://2e.aonprd.com/
+sec-ch-ua
+"Opera GX";v="125", "Not?A_Brand";v="8", "Chromium";v="141"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+same-site
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition std-2)
