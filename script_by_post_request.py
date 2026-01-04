@@ -3,6 +3,7 @@
 import requests
 import json
 import pandas as pd
+import random
 
 url = 'https://elasticsearch.aonprd.com/aon/_search?stats=search'
 
@@ -121,10 +122,20 @@ def change_creature_level(json_string, min_level, max_level):
 
     return data
 
-new_request = change_creature_level(json_as_text, min_level, max_level)
+#new_request = change_creature_level(json_as_text, min_level, max_level)
+
+def request_by_user_input():
+    print('введите минимальный уровень существа')
+    min_level = int(input())
+    print('введите максимальный уровень существа')
+    max_level = int(input())
+
+    new_request = change_creature_level(json_as_text, min_level, max_level)
+
+    return new_request
 
 # 2. Отправляем POST-запрос с JSON в теле
-def make_request():
+def make_request(new_request):
     response = requests.post(url, json=new_request, headers=headers)
 
     if response.status_code == 200: #status code - статус ответа, например 404 page no found, 200 - вроде всё ок
@@ -145,3 +156,17 @@ def create_df_from_request(data):
     df = pd.DataFrame(monsters_data)
     print(df[['name', 'level', 'url', 'hp', 'ac']].head())
     print(df.describe())
+    return df
+
+def get_random_url(data):
+    random_statblock = random.choice(data['hits']['hits'])
+    random_url = random_statblock['_source']['url']
+    print('https://2e.aonprd.com' + f'{random_url}')
+
+if __name__ == '__main__':
+    request = request_by_user_input()
+    data = make_request(request)
+    df = create_df_from_request(data)
+    get_random_url(data)
+
+
