@@ -124,21 +124,24 @@ def change_creature_level(json_string, min_level, max_level):
 new_request = change_creature_level(json_as_text, min_level, max_level)
 
 # 2. Отправляем POST-запрос с JSON в теле
-response = requests.post(url, json=new_request, headers=headers)
+def make_request():
+    response = requests.post(url, json=new_request, headers=headers)
 
-if response.status_code == 200: #status code - статус ответа, например 404 page no found, 200 - вроде всё ок
-    data = response.json()
+    if response.status_code == 200: #status code - статус ответа, например 404 page no found, 200 - вроде всё ок
+        data = response.json()
     
-    # Сохраняем полный ответ для анализа
-    with open('full_api_response.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-    print("Ответ сохранён в 'full_api_response.json'. Проверьте его структуру.")
+        # Сохраняем полный ответ для анализа
+        with open('full_api_response.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        print("Ответ сохранён в 'full_api_response.json'. Проверьте его структуру.")
 
+        return data
+
+def create_df_from_request(data):
     monsters_data = []
     for monster in data['hits']['hits']:
         source = monster['_source']
         monsters_data.append(source)
-    
     df = pd.DataFrame(monsters_data)
     print(df[['name', 'level', 'url', 'hp', 'ac']].head())
     print(df.describe())
