@@ -141,3 +141,4 @@ if response.status_code == 200: #status code - статус ответа, нап
     
     df = pd.DataFrame(monsters_data)
     print(df[['name', 'level', 'url', 'hp', 'ac']].head())
+    print(df.describe())
