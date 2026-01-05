@@ -145,7 +145,7 @@ def make_request(new_request):
         with open('full_api_response.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         print("Ответ сохранён в 'full_api_response.json'. Проверьте его структуру.")
-
+        print('Найдено результатов', len(data['hits']['hits']))
         return data
 
 def create_df_from_request(data):
