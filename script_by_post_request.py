@@ -147,6 +147,7 @@ def make_request(new_request):
         print("Ответ сохранён в 'full_api_response.json'. Проверьте его структуру.")
         print('Найдено результатов', len(data['hits']['hits']))
         return data
+    else: return print(response.status_code)
 
 def create_df_from_request(data):
     monsters_data = []
