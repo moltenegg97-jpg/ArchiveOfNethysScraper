@@ -4,8 +4,12 @@ import requests
 import json
 import pandas as pd
 import random
+import webbrowser
+from pathlib import Path
 
 url = 'https://elasticsearch.aonprd.com/aon/_search?stats=search'
+
+
 
 min_level = 2
 max_level = 3
@@ -139,8 +143,7 @@ def make_request(new_request):
     response = requests.post(url, json=new_request, headers=headers)
     print('making a request')
     if response.status_code == 200: #status code - статус ответа, например 404 page no found, 200 - вроде всё ок
-        data = response.json()
-    
+        data = response.json()    
         # Сохраняем полный ответ для анализа
         with open('full_api_response.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
@@ -155,6 +158,7 @@ def create_df_from_request(data):
         source = monster['_source']
         monsters_data.append(source)
     df = pd.DataFrame(monsters_data)
+    format_df(df)
     print(df[['name', 'level', 'url', 'hp', 'ac']].head())
     print(df.describe())
     return df
@@ -165,6 +169,26 @@ def get_random_url(data):
     print('url = https://2e.aonprd.com' + f'{random_url}')
     print(f'name = {random_statblock['_source']['name']}')
     print(f'level = {random_statblock['_source']['level']}')
+
+def open_exel_file():
+    file_path = Path(__file__).parent/'monsters.xlsx'
+    if file_path.exists():
+        webbrowser.open(file_path)
+    else:
+        print("Файл не найден. Проверьте название и путь.")
+
+def format_df(df:pd.DataFrame)->pd.DataFrame:
+    saved_culums = ['ac', 'ac_scale', 'attack_bonus', 'attack_bonus_scale', 'creature_ability',
+                    'creature_family_markdown', 'hp_raw', 'hp_scale', 'immunity_markdown', 'language_markdown', 
+                    'level', 'name', 'perception', 'perception_scale', 'rarity', 'reflex_save', 'reflex_save_scale', 
+                    'resistance', 'sense_markdown', 'size', 'speed_markdown', 'spell_markdown', 'strike_damage_scale', 'text',
+                    'tradition_markdown', 'trait', 'url', 'vision', 'will_save', 'will_save_scale',	'wisdom', 'wisdom_scale',
+                    'spell_dc', 'spell_dc_scale', 'weakness_markdown', 'language', 'spell_attack_bonus', 'spell_attack_bonus_scale',
+                    ] 
+    new_df = df[saved_culums]
+    new_df.to_excel('monsters.xlsx', engine='openpyxl')
+    return new_df
+
 
 if __name__ == '__main__':
     request = request_by_user_input()

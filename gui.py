@@ -42,6 +42,8 @@ class MainWindow():
         self.print_len_result_btn.pack()
         self.new_window_btn = tk.Button(self.frame2, text='new window', command=self.create_new_window)
         self.new_window_btn.pack()
+        self.open_exel_btn = tk.Button(self.frame2, text='open exel', command=sbpr.open_exel_file)
+        self.open_exel_btn.pack()
 
     def print_min_text(self, entry:tk.Entry):
         text = entry.get()
@@ -55,7 +57,8 @@ class MainWindow():
     def request_from_gui(self, min_entry:tk.Entry, max_entry:tk.Entry):
         min_level, max_level = self.level_from_gui(min_entry, max_entry)
         request = sbpr.change_creature_level(sbpr.json_as_text, min_level, max_level)
-        sbpr.make_request(request)
+        data = sbpr.make_request(request)
+        df = sbpr.create_df_from_request(data)
 
     def open_json_responce(self):
         file_path = Path(__file__).parent/'full_api_response.json'
@@ -79,7 +82,6 @@ class MainWindow():
 
     def random_url_from_json_file(self):
         file_path = Path(__file__).parent/'full_api_response.json'
-        print(file_path)
         data = None
         if file_path.exists():
             print("Файл найден! Открываю...")
